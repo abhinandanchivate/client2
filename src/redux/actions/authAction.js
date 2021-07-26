@@ -1,6 +1,12 @@
 import axios from "axios";
 import { setAuthToken } from "../../utils/setAuthToken";
-import { REGISTER_SUCCESS, USER_LOADED } from "../types";
+import {
+  LOGIN_FAIL,
+  LOGIN_SUCCESS,
+  REGISTER_SUCCESS,
+  USER_LOADED,
+} from "../types";
+import { setAlert } from "./alertAction";
 
 // action can't access the content from store directly whatever the data
 // it will get it from the component it will use it.
@@ -42,7 +48,47 @@ export const register =
       });
       dispatch(loadUser());
       // this one will retrieve the user details & will hold it into the store.
-    } catch (err) {}
+      dispatch(setAlert("user created successfully", "success"));
+    } catch (err) {
+      console.log(JSON.stringify(err.response.data.errors));
+      const errors = err.response.data.errors;
+      if (errors) {
+        errors.forEach((error) => {
+          dispatch(setAlert(error.msg, "danger"));
+        });
+      }
+    }
   };
 
 // login action
+
+export const login = (email, password) => async (dispatch) => {
+  const config = {
+    headers: {
+      "Content-type": "application/json",
+    },
+  };
+
+  const body = JSON.stringify({ email, password });
+
+  try {
+    const res = await axios.post("/api/auth", body, config);
+
+    dispatch({
+      type: LOGIN_SUCCESS,
+      payload: res.data,
+    });
+
+    dispatch(loadUser());
+  } catch (err) {
+    const errors = err.response.data.errors;
+
+    if (errors) {
+      errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
+    }
+
+    dispatch({
+      type: LOGIN_FAIL,
+    });
+  }
+};

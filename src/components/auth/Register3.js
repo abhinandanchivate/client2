@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { register } from "../../redux/actions/authAction";
 import classnames from "classnames";
+import { Redirect } from "react-router-dom";
 export const Register3 = ({ isAuthenticated, register }) => {
   const [formData, setFormData] = useState({
     name: "",
@@ -32,6 +33,9 @@ export const Register3 = ({ isAuthenticated, register }) => {
     register({ name, email, password });
   };
 
+  if (isAuthenticated) {
+    return <Redirect to="/dashboard"></Redirect>;
+  }
   return (
     <div class="register">
       <div class="container">
@@ -107,6 +111,7 @@ export const Register3 = ({ isAuthenticated, register }) => {
 
 Register3.propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
+  register: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
