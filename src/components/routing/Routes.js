@@ -7,7 +7,7 @@ import Dashboard from "../dashboard/Dashboard";
 import Alert from "../layout/Alert";
 import AddExperience from "../profile/AddExperience";
 import CreateProfile from "../profile/CreateProfile";
-
+import PrivateRouting from "./PrivateRouting";
 //import Register from "../auth/Register";
 
 export const Routes = () => {
@@ -17,9 +17,21 @@ export const Routes = () => {
       <Switch>
         <Route exact path="/login" component={Login}></Route>
         <Route exact path="/register" component={Register3}></Route>
-        <Route exact path="/dashboard" component={Dashboard}></Route>
-        <Route exact path="/create-profile" component={CreateProfile}></Route>
-        <Route exact path="/add-experience" component={AddExperience}></Route>
+        <PrivateRouting
+          exact
+          path="/dashboard"
+          component={Dashboard}
+        ></PrivateRouting>
+        <PrivateRouting
+          exact
+          path="/create-profile"
+          component={CreateProfile}
+        ></PrivateRouting>
+        <PrivateRouting
+          exact
+          path="/add-experience"
+          component={AddExperience}
+        ></PrivateRouting>
       </Switch>
     </div>
   );

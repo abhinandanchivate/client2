@@ -1,5 +1,11 @@
 import axios from "axios";
-import { GET_PROFILE, PROFILE_ERROR, UPDATE_PROFILE } from "../types";
+import {
+  CLEAR_PROFILE,
+  GET_PROFILE,
+  GET_PROFILES,
+  PROFILE_ERROR,
+  UPDATE_PROFILE,
+} from "../types";
 import { setAlert } from "./alertAction";
 
 export const getCurrentProfile = () => async (dispatch) => {
@@ -87,6 +93,26 @@ export const addExperience = (formData, history) => async (dispatch) => {
       errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
     }
 
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: {
+        msg: err.response.statusText,
+        status: err.response.status,
+      },
+    });
+  }
+};
+
+export const getProfiles = () => async (dispatch) => {
+  dispatch({ type: CLEAR_PROFILE });
+
+  try {
+    const res = await axios.get("/api/profile");
+    dispatch({
+      type: GET_PROFILES,
+      payload: res.data,
+    });
+  } catch (err) {
     dispatch({
       type: PROFILE_ERROR,
       payload: {

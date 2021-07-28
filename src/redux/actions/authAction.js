@@ -1,8 +1,10 @@
 import axios from "axios";
 import { setAuthToken } from "../../utils/setAuthToken";
 import {
+  CLEAR_PROFILE,
   LOGIN_FAIL,
   LOGIN_SUCCESS,
+  LOGOUT,
   REGISTER_SUCCESS,
   USER_LOADED,
 } from "../types";
@@ -91,4 +93,11 @@ export const login = (email, password) => async (dispatch) => {
       type: LOGIN_FAIL,
     });
   }
+};
+
+export const logout = () => (dispatch) => {
+  // clear ur profile
+  dispatch({ type: CLEAR_PROFILE });
+  dispatch({ type: LOGOUT });
+  // logout
 };

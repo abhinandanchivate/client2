@@ -1,4 +1,10 @@
-import { LOGIN_SUCCESS, REGISTER_SUCCESS, USER_LOADED } from "../types";
+import {
+  ACCOUNT_DELETED,
+  LOGIN_SUCCESS,
+  LOGOUT,
+  REGISTER_SUCCESS,
+  USER_LOADED,
+} from "../types";
 
 const initialState = {
   token: localStorage.getItem("token"),
@@ -21,6 +27,17 @@ export default (state = initialState, action) => {
     case REGISTER_SUCCESS:
       localStorage.setItem("token", payload.token);
       return { ...state, ...payload };
+
+    case LOGOUT:
+    case ACCOUNT_DELETED:
+      localStorage.removeItem("token");
+      return {
+        ...state,
+        token: null,
+        isAuthenticated: false,
+        user: null,
+        loading: false,
+      };
 
     default:
       return state;
